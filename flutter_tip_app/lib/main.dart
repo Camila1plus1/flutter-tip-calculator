@@ -30,6 +30,24 @@ class UTip extends StatefulWidget {
 class _UTipState extends State<UTip> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('UTip App'),
+      ),
+      body: Column(
+        children: [
+          Container(
+          padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(color: Colors.deepPurple,
+            borderRadius: BorderRadius.circular(10.0)),
+            child: Column(
+              children: [
+                Text('Total tip per Person'),
+                Text('\$')
+              ],
+            )),
+        ],
+      ),
+    );
   }
 }
