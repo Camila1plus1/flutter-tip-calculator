@@ -28,6 +28,22 @@ class UTip extends StatefulWidget {
 }
 
 class _UTipState extends State<UTip> {
+  int _personCount = 1;
+  //Methods for decrementing and incrementing the person count
+  void decrementPersonCount(){
+    setState(() {
+      if (_personCount > 1) {
+        _personCount--;
+      }
+    });
+  }
+
+  void incrementPersonCount(){
+    setState((){
+      _personCount++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -42,8 +58,10 @@ class _UTipState extends State<UTip> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-          padding: EdgeInsets.all(18),
+          Padding(
+          padding: EdgeInsets.all(8),
+          child: Container(
+            padding: EdgeInsets.all(18),
             decoration: BoxDecoration(
               color: theme.colorScheme.inversePrimary,
             borderRadius: BorderRadius.circular(10.0)),
@@ -56,12 +74,58 @@ class _UTipState extends State<UTip> {
             style: style.copyWith(
               color: theme.colorScheme.onPrimary,
               fontSize: theme.textTheme.displaySmall!.fontSize,
-            ),
-            ),
-              ],
-            )),
-        ],
-      ),
-    );
-  }
+                ),
+               ),
+             ],
+           ),
+         ),
+       ),
+       Padding(
+         padding: const EdgeInsets.all(8.0),
+         child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: theme.colorScheme.primary),
+              ),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      prefix: Icon(Icons.attach_money),
+                      labelText: 'Bill Amount'),
+                    keyboardType: TextInputType.number,
+                    onChanged:(value) {
+                       print('Value: $value'); 
+                    },
+                  ), 
+                  //Section with Splitting the bill and incrementing/decrementing the person count
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text( 'Split',
+                      style: theme.textTheme.titleMedium),
+                      Row(
+                        children: [
+                        IconButton(
+                          color: theme.colorScheme.primary,
+                          onPressed: decrementPersonCount, icon: Icon(Icons.remove)),
+                        Text('$_personCount',
+                        style: theme.textTheme.titleMedium),
+                        IconButton(
+                          color: theme.colorScheme.primary,
+                          onPressed: incrementPersonCount, icon: Icon(Icons.add)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+         ),
+       ),
+     ],
+    ),
+  );
+ }
 }
