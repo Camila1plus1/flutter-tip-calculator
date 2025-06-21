@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tip_app/widgets/person_counter.dart';
 import 'package:flutter_tip_app/widgets/SamSlider.dart';
+import 'package:flutter_tip_app/widgets/billAmount.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,8 +32,17 @@ class UTip extends StatefulWidget {
 
 class _UTipState extends State<UTip> {
   int _personCount = 1;
-  
+  double _totalBill = 0.0;
   double _tipPercentage = 0.0;
+
+  double billPerPerson(){
+return ((((_totalBill * _tipPercentage) + _totalBill)/_personCount).roundToDouble());
+  }
+
+  double totalTip(){
+    return _totalBill * _tipPercentage;
+  }
+
   //Methods for decrementing and incrementing the person count
   void decrementPersonCount(){
     setState(() {
@@ -51,6 +61,9 @@ class _UTipState extends State<UTip> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    double total = billPerPerson();
+    double totalTips = totalTip();
+    //Style for the text in the tip calculator
     final style = theme.textTheme.titleMedium!.copyWith(
     color: theme.colorScheme.onPrimary,
     fontWeight: FontWeight.bold,
@@ -74,7 +87,7 @@ class _UTipState extends State<UTip> {
                 Text('Total tip per Person',
                 style: style,
                 ),
-            Text('\$15.00',
+            Text('\$$total',
             style: style.copyWith(
               color: theme.colorScheme.onPrimary,
               fontSize: theme.textTheme.displaySmall!.fontSize,
@@ -87,6 +100,7 @@ class _UTipState extends State<UTip> {
        Padding(
          padding: const EdgeInsets.all(8.0),
          child: Container(
+          padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(
@@ -94,15 +108,14 @@ class _UTipState extends State<UTip> {
               ),
               child: Column(
                 children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      prefix: Icon(Icons.attach_money),
-                      labelText: 'Bill Amount'),
-                    keyboardType: TextInputType.number,
-                    onChanged:(value) {
-                       print('Value: $value'); 
-                    },
+                  BillAmount(
+                    billAmount: '$_totalBill',
+                    onChanged: (value){
+                      setState((){
+                        _totalBill = double.tryParse(value) ?? 0.0;
+                      });
+                      print('Bill Amount: $value');
+                    }
                   ), 
                   //Section with Splitting the bill and incrementing/decrementing the person count
                   Row(
@@ -119,7 +132,7 @@ class _UTipState extends State<UTip> {
                     children: [
                       Text('Tip',
                       style: theme.textTheme.titleMedium),
-                      Text('\$15', 
+                      Text('$totalTips', 
                       style: theme.textTheme.titleMedium)
                     ],
                   ),
