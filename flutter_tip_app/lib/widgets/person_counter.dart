@@ -18,8 +18,12 @@ class PersonCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-      IconButton(
+      Text( 'Split',
+        style: theme.textTheme.titleMedium),
+      Row(
+        children: [IconButton(
         color: theme.colorScheme.primary,
         onPressed: onDecrement, icon: Icon(Icons.remove)),
       Text('$_personCount',
@@ -27,6 +31,8 @@ class PersonCounter extends StatelessWidget {
       IconButton(
         color: theme.colorScheme.primary,
         onPressed: onIncrement, icon: Icon(Icons.add)),
+        ],
+      ),
       ],
     );
   }
